@@ -32,12 +32,16 @@ async function getStudentGradesReport (req, res, next) {
   const { id } = req.params
   try {
     const student = await utils.getStudentByID(Number(id))
-    utils.handleWorker(res, student)
+    utils.handleWorker(res, student, 'studentGradesReport')
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
 }
 
 async function getCourseGradesReport (req, res, next) {
-  throw new Error('This method has not been implemented yet.')
+  try {
+    utils.handleWorker(res, null, 'courseGradesReport')
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
 }
