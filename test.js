@@ -19,6 +19,18 @@ tape('health', async function (t) {
     t.error(e)
   }
 })
+tape('Should getStudent Data', async function (t) {
+  const studentId = 1
+  const url = `${endpoint}/student/${studentId}`
+  try {
+    const { data } = await jsonist.get(url)
+    const hasTheCorrectStudentId = data.student.id === studentId
+    t.ok(hasTheCorrectStudentId, 'should have fetched the student with id')
+    t.end()
+  } catch (e) {
+    t.error(e)
+  }
+})
 
 tape('cleanup', function (t) {
   server.closeDB()
