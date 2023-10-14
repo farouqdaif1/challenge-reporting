@@ -1,5 +1,6 @@
 const knex = require('./db')
 const utils = require('./utils')
+
 module.exports = {
   getHealth,
   getStudent,
@@ -7,7 +8,7 @@ module.exports = {
   getCourseGradesReport
 }
 
-async function getHealth(req, res, next) {
+async function getHealth (req, res, next) {
   try {
     await knex('students').first()
     res.json({ success: true })
@@ -17,20 +18,26 @@ async function getHealth(req, res, next) {
   }
 }
 
-async function getStudent(req, res, next) {
+async function getStudent (req, res, next) {
   const { id } = req.params
   try {
-    const student = await utils.getStudentByID(Number(id));
-    res.json({ student });
+    const student = await utils.getStudentByID(Number(id))
+    res.json({ student })
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ msg: error.message })
   }
 }
 
-async function getStudentGradesReport(req, res, next) {
-  throw new Error('This method has not been implemented yet.')
+async function getStudentGradesReport (req, res, next) {
+  const { id } = req.params
+  try {
+    const student = await utils.getStudentByID(Number(id))
+    utils.handleWorker(res, student)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
 }
 
-async function getCourseGradesReport(req, res, next) {
+async function getCourseGradesReport (req, res, next) {
   throw new Error('This method has not been implemented yet.')
 }
